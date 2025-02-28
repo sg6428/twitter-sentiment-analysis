@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sample-cronjob
+spec:
+  schedule: "0 8 * * *"  # Run every day at 8:00 AM
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: sentiment-analysis-job
+            image: sg6428/tweet-sentiment-analysis:latest
+            command: ["python", "app_batch.py"]
+            env:
+            - name: MODEL_PATH
+              value: /mnt/model_weight
+            - name: INPUT_BUCKET
+              value: /mnt/data/batched
+            - name: OUTPUT_BUCKET
+              value: /mnt/data/output
+            - name: CHUNK_SIZE
+              value: "5000"
+            volumeMounts:
+            - name: model-volume
+              mountPath: /mnt
+          volumes:
+          - name: model-volume
+            hostPath: 
+              path: /host_mount
+          restartPolicy: OnFailure

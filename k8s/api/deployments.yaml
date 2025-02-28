@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentiment-analysis-app
+spec:
+  replicas: 1  # Set the number of replicas to 1
+  selector:
+    matchLabels:
+      app: sentiment-analysis-app
+  template:
+    metadata:
+      labels:
+        app: sentiment-analysis-app
+    spec:
+      containers:
+      - name: fastapi-container
+        image: sg6428/tweet-sentiment-analysis:latest  # Replace with your actual Flask Docker image
+        command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+        ports:
+        - containerPort: 8000  # Expose the port your Flask app is running on
+        env:
+        - name: MODEL_PATH
+          value: /mnt/model_weight
+        volumeMounts:
+        - name: model-volume
+          mountPath: /mnt
+      
+      volumes:
+      - name: model-volume
+        hostPath:
+          path: /host_mount

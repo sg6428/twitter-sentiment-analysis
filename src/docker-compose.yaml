@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  sentiment_api:
+    image: sg6428/tweet-sentiment-analysis:latest
+    container_name: sentiment_container
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=/mnt
+    volumes:
+      - /Users/admin/Documents/Savani_Documents/Machine_Learning/Revelio_Assessment/sentiment_analysis_app/model_weight:/mnt  # Mounts a local directory to '/mnt' in the container

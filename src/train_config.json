@@ -1,0 +1,13 @@
+{
+"train_config": {
+    "batch_size": 16,
+    "epochs": 3,
+    "lr": 5e-5,
+    "eval_strategy": "steps",
+    "save_strategy": "epoch",
+    "load_best_model": true,
+    "metric": "accuracy",
+    "report_to": "none",
+    "fp16": false 
+    }
+}
